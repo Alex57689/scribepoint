@@ -1,36 +1,20 @@
-import { Typography, Box, Container } from "@mui/material";
 import "./App.css";
-import Login from "./components/login/Login";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+//pages
+import LoginPage from "./pages/LoginPage";
+import Home from "./pages/Home";
 
 function App() {
   return (
-    <>
-      <Box
-        sx={{
-          backgroundColor: "#1A1A1A",
-          minHeight: "100vh", // Full height for the page
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Container
-          maxWidth="sm"
-          sx={{
-            padding: 3,
-            borderRadius: 2,
-            position: "absolute",
-            top: 0,
-          }}
-        >
-          <Typography variant="h1" fontWeight={500} color="primary">
-            Scribe Point
-          </Typography>
-        </Container>
-
-        <Login />
-      </Box>
-    </>
+    <BrowserRouter>
+      <main>
+        <Routes>
+          <Route index element={<LoginPage />}></Route>
+          <Route path="/home" element={<Home />}></Route>
+        </Routes>
+      </main>
+    </BrowserRouter>
   );
 }
 
