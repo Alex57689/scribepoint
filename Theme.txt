@@ -1,0 +1,33 @@
+Primary Color:
+
+Hex: #E61F63
+Description: A bold pink-magenta used for main accents, call-to-action buttons, icons, and links.
+Secondary Color (Accent Color):
+
+Hex: #FF8BA3
+Description: A lighter pink, perfect for hover effects, borders, or highlights. It complements the primary color while offering a softer tone.
+Complementary Color (Contrasting Color):
+
+Hex: #1FA3E6
+Description: A contrasting blue that brings balance. Use this sparingly for important highlights or accent sections to create a strong visual break.
+Neutral Backgrounds:
+
+Dark Background:
+Hex: #1A1A1A
+Description: A near-black shade for headers, footers, or backgrounds that emphasizes the primary color without clashing.
+Light Background:
+Hex: #F9F9F9
+Description: A very light gray that works well as the primary background, offering a clean look that helps the main colors stand out.
+Text Colors:
+
+Primary Text:
+Hex: #333333
+Description: A deep gray that maintains readability without being too harsh.
+Secondary Text:
+Hex: #737373
+Description: A mid-gray suitable for less emphasized text, such as placeholders or descriptions.
+Would you like this applied to specific UI elements, or should I suggest any tweaks based on accessibility?
+
+
+Headings: Montserrat – Rounded and bold, Montserrat has a warm, inviting look that works well with lively colors like #E61F63.
+Body Text: Lato – With subtle curves, Lato is friendly yet professional and complements Montserrat’s rounded style for a smooth reading experience.
