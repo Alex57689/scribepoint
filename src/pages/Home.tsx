@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import Navbar from "../components/navbar/Navbar";
+import TileGrid from "../components/tilegrid/TileGrid";
 
 const Home = () => {
   return (
@@ -11,6 +12,11 @@ const Home = () => {
         }}
       >
         <Navbar />
+
+        <Box width={"100%"}>
+          <TileGrid />
+          
+        </Box>
       </Box>
     </>
   );
