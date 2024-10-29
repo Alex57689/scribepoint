@@ -1,49 +1,42 @@
 import JobTile from "../jobcard/JobTile";
 import "./tilegrid.css";
 
-const tasks = [
+const cards = [
   {
     id: 1,
-    cardName: "card 1",
-    task1: "Design a simple to do application",
-    task2: "Dont do the dishes",
-  },
-  {
-    id: 2,
-    cardName: "card 2",
-    task1: "Do the dishes",
-    task2: "Dont do the dishes",
-  },
-  {
-    id: 3,
-    cardName: "card 3",
-    task1: "Move to mars",
-    task2: "Dont do the dishes",
-  },
-  {
-    id: 3,
-    cardName: "card 3",
-    task1: "Move to mars",
-    task2: "Dont do the dishes",
-  },
-  {
-    id: 3,
-    cardName: "card 3",
-    task1: "Move to mars",
-    task2: "Dont do the dishes",
-  },
-  {
-    id: 3,
-    cardName: "card 3",
-    task1: "Move to mars",
-    task2: "Dont do the dishes",
+    cardTitle: "To Do Backend",
+    cardDate: "2023-10-29",
+    tasks: [
+      {
+        id: 1,
+        title: "do the dishes",
+        description:
+          "make sure all the dishes are done before mum gets home and gets angry at us",
+        createdby: "alex the cool kid",
+        date: "10/10/2027",
+      },
+      {
+        id: 2,
+        title: "run 10km",
+        description: "run 10km fast",
+        createdby: "alex the cool kid",
+        date: "10/10/2022",
+      },
+      {
+        id: 2,
+        title: "Make dinner for the family",
+        description: "",
+        createdby: "alex the cool kid",
+        date: "10/10/2022",
+      },
+    ],
   },
 ];
 const TileGrid = () => {
   return (
     <div className="grid">
-      {tasks.map((card) => (
-        <JobTile id={card.id} title={card.cardName} desc={card.task1} />
+      {cards.map((card) => (
+        <JobTile key={card.id} card={card} />
       ))}
     </div>
   );

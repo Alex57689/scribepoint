@@ -13,9 +13,8 @@ const Home = () => {
       >
         <Navbar />
 
-        <Box width={"100%"}>
+        <Box marginLeft={3} marginRight={3}>
           <TileGrid />
-          
         </Box>
       </Box>
     </>
