@@ -31,3 +31,45 @@ Would you like this applied to specific UI elements, or should I suggest any twe
 
 Headings: Montserrat – Rounded and bold, Montserrat has a warm, inviting look that works well with lively colors like #E61F63.
 Body Text: Lato – With subtle curves, Lato is friendly yet professional and complements Montserrat’s rounded style for a smooth reading experience.
+ <div className="cardmodal">
+          {selectedTask ? (
+            <>
+              <div className="editcardtitle">
+                <Typography marginBottom={1} variant="h4">
+                  {selectedTask.title}
+                </Typography>
+                <Typography>
+                  in list <strong>{card.cardTitle}</strong>
+                </Typography>
+              </div>
+
+              <div className="editcarddesc">
+                <div className="editcarddesctitle">
+                  <div style={{ display: "flex", justifyContent: "" }}>
+                    <SubjectIcon fontSize="medium" />
+                    <Typography>Description</Typography>
+                  </div>
+
+                  <Button>Edit</Button>
+                </div>
+
+                <Typography>{selectedTask.description}</Typography>
+              </div>
+
+              <div>
+                <div>
+                  <FormatListBulletedIcon />
+                  <Typography>Activity</Typography>
+                </div>
+                <div className="editcardactivity">
+                  <Typography>
+                    {selectedTask.createdby} Created this card
+                  </Typography>
+                  <Typography>{selectedTask.date}</Typography>
+                </div>
+              </div>
+            </>
+          ) : null}
+        </div>
+      </Modal>
+    </div>

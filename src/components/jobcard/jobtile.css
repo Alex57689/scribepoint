@@ -58,3 +58,44 @@
   visibility: visible;
   opacity: 1;
 }
+
+.cardmodal {
+  position: absolute;
+  width: 750px;
+  height: 90vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f1f2f4;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.editcardgrid {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+}
+
+.strongbg {
+  background-color: #e4e6e9;
+  padding: 0.4rem;
+}
+
+.editcardgridrow {
+  margin-bottom: 5rem;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.editcarddesc {
+  margin-top: 1rem;
+}
+
+.editcardgridactivity {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
