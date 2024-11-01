@@ -158,9 +158,10 @@ const JobTile = ({ card }: Card) => {
                 fontSize="medium"
               />
               <div className="editcardgridactivity">
-                <Typography variant="h6" marginBottom={5}>
-                  Activity
-                </Typography>
+                <Typography variant="h6">Activity</Typography>
+                <Button variant="contained" size="small">
+                  Details
+                </Button>
               </div>
               <AccountCircleIcon
                 color="primary"

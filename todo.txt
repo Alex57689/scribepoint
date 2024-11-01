@@ -4,8 +4,6 @@ edit modal:
 
     make a disctipion text box if one isnt already in the data
 
-    make it 1 width that doesnt change till mobile sizing
-
     buttons down the right hand
 
     pointers for hover events
@@ -31,82 +29,3 @@ tilegrid.tsx{
 }
 
 
-
-
-
-
-
-
-              <div className="cardtitle">
-                <SubjectIcon sx={{ marginTop: 0.5 }} fontSize="medium" />
-                <div className="content">
-                  <div className="editcarddesctitle">
-                    <Typography variant="h5">Description</Typography>
-                    <Button variant="contained">Edit</Button>
-                  </div>
-                  <Typography>{selectedTask.description}</Typography>
-                </div>
-              </div>
-
-              <div className="cardtitle">
-                <FormatListBulletedIcon
-                  sx={{ marginTop: 0.5 }}
-                  fontSize="medium"
-                />
-                <div className="content">
-                  <div className="editcarddesctitle">
-                    <Typography variant="h5" marginBottom={5}>
-                      Activity
-                    </Typography>
-                  </div>
-
-                  <Typography fontSize={".9rem"}>
-                    <strong>{selectedTask.createdby}</strong> added this card in
-                    <strong> {card.cardTitle}</strong>
-                  </Typography>
-                  <Typography>{selectedTask.date}</Typography>
-                </div>
-              </div>
-            </div>
-          ) : null}
-        </div>
-      </Modal>
-
-
-
-
-      
-.cardmodal {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 1rem;
-  border-radius: 0.5rem;
-}
-
-.editcardgrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(3, 1fr);
-  gap: 1rem;
-}
-
-.cardtitle {
-  display: flex;
-}
-
-.editcardtitle strong {
-  background-color: #f1f2f4;
-  padding: 0.3rem;
-}
-
-.editcarddesctitle {
-  display: flex;
-  justify-content: space-between;
-}
-
-.content {
-  margin-left: 1rem;
-}

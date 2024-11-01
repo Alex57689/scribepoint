@@ -1,7 +1,6 @@
 .tile-container {
-  max-width: 18.75rem;
+  width: 18.75rem;
   display: flex;
-  justify-content: center;
   flex-direction: column;
   background-color: #f1f2f4;
   border-radius: 0.5rem;
@@ -87,6 +86,7 @@
 
 .content {
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -97,5 +97,23 @@
 .editcardgridactivity {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 1rem;
+}
+
+@media (max-width: 670px) {
+  .tile-container {
+    width: 95%;
+  }
+  .cardmodal {
+    position: absolute;
+    width: 300px;
+    height: 90vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f1f2f4;
+    padding: 1rem;
+    border-radius: 1rem;
+  }
 }

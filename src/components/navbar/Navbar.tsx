@@ -44,7 +44,7 @@ const Navbar = () => {
         onClose={toggleDrawer}
         sx={{
           "& .MuiDrawer-paper": {
-            backgroundColor: "secondary.main", // Custom background color here
+            backgroundColor: "primary.main", // Custom background color here
           },
         }}
       >
@@ -61,8 +61,8 @@ const Navbar = () => {
               marginLeft: 1,
             }}
           >
-            <Typography variant="h6" sx={{ p: 2 }}>
-              Projects
+            <Typography variant="h6" sx={{ p: 2, color: "white" }}>
+              Boards
             </Typography>
             <IconButton>
               <CloseIcon />
