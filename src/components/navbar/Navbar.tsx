@@ -1,20 +1,13 @@
+import { Typography, AppBar, Toolbar, IconButton, Drawer } from "@mui/material";
 import { useState } from "react";
-import {
-  Typography,
-  Box,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Drawer,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import MenuIcon from "@mui/icons-material/Menu";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 const Navbar = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const drawerWidth = 240;
 
-  const toggleDrawer = () => {
-    setIsDrawerOpen(!isDrawerOpen);
+  const handleOpen = () => {
+    setDrawerOpen(true);
   };
 
   return (
@@ -22,13 +15,10 @@ const Navbar = () => {
       <AppBar position="static">
         <Toolbar variant="dense">
           <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={toggleDrawer}
+            sx={{ marginRight: 1, color: "white" }}
+            onClick={handleOpen}
           >
-            <MenuIcon />
+            <GiHamburgerMenu />
           </IconButton>
           <Typography variant="h6" color="inherit" component="div">
             Scribe Point
@@ -36,40 +26,21 @@ const Navbar = () => {
         </Toolbar>
       </AppBar>
 
-      {/* Drawer Sidebar */}
       <Drawer
-        variant="persistent"
-        anchor="left"
-        open={isDrawerOpen}
-        onClose={toggleDrawer}
         sx={{
+          width: drawerWidth,
+          flexShrink: 0,
           "& .MuiDrawer-paper": {
-            backgroundColor: "primary.main", // Custom background color here
+            width: drawerWidth,
+            boxSizing: "border-box",
+            backgroundColor: "#404040",
           },
         }}
+        open={drawerOpen}
+        variant="persistent"
       >
-        <Box
-          sx={{ width: 250 }}
-          onClick={toggleDrawer}
-          onKeyDown={toggleDrawer}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginRight: 5,
-              marginLeft: 1,
-            }}
-          >
-            <Typography variant="h6" sx={{ p: 2, color: "white" }}>
-              Boards
-            </Typography>
-            <IconButton>
-              <CloseIcon />
-            </IconButton>
-          </Box>
-          {/* Add sidebar items here */}
-        </Box>
+        <IconButton onClick={() => setDrawerOpen(false)}>Close</IconButton>
+        <Typography sx={{ padding: 2 }}>Drawer content goes here.</Typography>
       </Drawer>
     </>
   );

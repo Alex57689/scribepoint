@@ -1,8 +1,8 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Navbar from "../components/navbar/Navbar";
 import TileGrid from "../components/tilegrid/TileGrid";
 
-const Home = () => {
+const Board = () => {
   return (
     <>
       <Box
@@ -13,11 +13,13 @@ const Home = () => {
       >
         <Navbar />
         <Box>
-          <Box marginLeft={3} marginRight={3}></Box>
+          <Box marginLeft={3} marginRight={3}>
+            <TileGrid />
+          </Box>
         </Box>
       </Box>
     </>
   );
 };
 
-export default Home;
+export default Board;
