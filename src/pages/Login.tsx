@@ -1,7 +1,11 @@
 import { Typography, Box, Container } from "@mui/material";
-import Login from "../components/login/Login";
+import LoginCard from "../components/login/LoginCard";
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
+const Login = () => {
+  const location = useLocation();
+  const action = location.state ? location.state?.action : "login";
 
-const LoginPage = () => {
   return (
     <Box
       sx={{
@@ -25,10 +29,9 @@ const LoginPage = () => {
           Scribe Point
         </Typography>
       </Container>
-
-      <Login />
+      <LoginCard click={action} />
     </Box>
   );
 };
 
-export default LoginPage;
+export default Login;
