@@ -1,5 +1,6 @@
 import { Typography, Box, Container, TextField, Button } from "@mui/material";
 import { useState } from "react";
+import axios from "axios";
 import { auth } from "../../firebase/firebaseConfig";
 import {
   createUserWithEmailAndPassword,
@@ -25,6 +26,7 @@ const LoginCard = ({ click }: Props) => {
     e.preventDefault();
     setError("");
 
+    // create user in firebase
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -32,13 +34,21 @@ const LoginCard = ({ click }: Props) => {
         password
       );
       const user = userCredential.user;
-
       await updateProfile(user, { displayName: fname + " " + lname });
+
+      //Prepare data for sql query
+      const userData = {
+        user_id: user.uid,
+        name: `${fname} ${lname}`,
+        email: user.email,
+      };
+
+      // add user to sqlDB
+      await axios.post("http://localhost:8080/api/users", userData);
+
+      // navigate to dashboard
       navigate("/dashboard");
     } catch (error: any) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      setError(errorMessage + " " + errorCode);
       console.error("Error during signup:", error);
     }
   };
