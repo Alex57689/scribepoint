@@ -12,10 +12,9 @@ const Home = () => {
       <Box
         sx={{
           backgroundColor: "#1A1A1A",
-          minHeight: "100vh", // Full height for the page
+          minHeight: "100vh",
         }}
       >
-        ={" "}
         <Box>
           <Box
             width={"100wh"}
@@ -24,7 +23,6 @@ const Home = () => {
             justifyContent={"center"}
             alignItems={"center"}
             marginLeft={3}
-            marginTop={2}
             marginRight={3}
           >
             <Typography
@@ -32,6 +30,7 @@ const Home = () => {
               fontWeight={400}
               color="#E61F63"
               margin={10}
+              textAlign={"center"}
             >
               Welcome to Scribe Point
             </Typography>

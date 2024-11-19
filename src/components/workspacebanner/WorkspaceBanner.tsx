@@ -13,6 +13,11 @@ interface Props {
 }
 
 const WorkspaceBanner = ({ workspaceData, Title }: Props) => {
+  // handle when the workspace tile is pressed
+  const handleworkspaceselect = (id: number) => {
+    console.log("workspace " + id + " pressed");
+  };
+
   return (
     <Box
       sx={{
@@ -56,8 +61,8 @@ const WorkspaceBanner = ({ workspaceData, Title }: Props) => {
       >
         {workspaceData?.map((workspace) => (
           <Box
+            onClick={() => handleworkspaceselect(workspace.workspace_id)}
             key={workspace.workspace_id}
-            onClick={() => console.log(`Clicked workspace: ${workspace.name}`)}
             sx={{
               padding: 5,
               border: 2,

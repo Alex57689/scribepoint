@@ -77,7 +77,7 @@ const Dashboard = () => {
           color="primary"
           sx={{
             marginTop: 2,
-            fontSize: { xs: "1.5rem", md: "2.5rem" },
+            fontSize: { xs: "2", md: "3.5rem" },
             textAlign: "center",
           }}
         >

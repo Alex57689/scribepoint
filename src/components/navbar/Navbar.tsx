@@ -5,6 +5,7 @@ import {
   IconButton,
   Drawer,
   Button,
+  Box,
 } from "@mui/material";
 import { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -17,6 +18,7 @@ const Navbar = () => {
   const drawerWidth = 240;
   const user = auth.currentUser;
   const navigate = useNavigate();
+
   const handleOpen = () => {
     setDrawerOpen(true);
   };
@@ -25,36 +27,69 @@ const Navbar = () => {
     try {
       await signOut(auth);
       navigate("/");
-      console.log("user has been logged out");
+      console.log("User has been logged out");
     } catch (error) {
-      console.error("Error logging out: ", error);
+      console.error("Error logging out:", error);
     }
   };
+
   return (
     <>
-      <AppBar position="static">
-        <Toolbar variant="dense">
-          <IconButton
-            sx={{ marginRight: 1, color: "white" }}
-            onClick={handleOpen}
-            aria-label="Open menu"
+      <AppBar position="static" sx={{ backgroundColor: "#E61F63" }}>
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+          }}
+        >
+          <Box display="flex" alignItems="center">
+            <IconButton
+              sx={{ marginRight: 1, color: "white" }}
+              onClick={handleOpen}
+              aria-label="Open menu"
+            >
+              <GiHamburgerMenu />
+            </IconButton>
+            <Typography
+              variant="h6"
+              color="inherit"
+              component="div"
+              sx={{
+                fontSize: { xs: "1rem", sm: "1.25rem" },
+                flexGrow: 1,
+              }}
+            >
+              Scribe Point
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+              flexWrap: "wrap",
+            }}
           >
-            <GiHamburgerMenu />
-          </IconButton>
-          <Typography
-            variant="h6"
-            color="inherit"
-            component="div"
-            sx={{ flexGrow: 1 }} // Ensures the title takes up remaining space
-          >
-            Scribe Point
-          </Typography>
-          <Typography variant="h6" color="inherit">
-            Welcome, {user ? user.displayName : "error"}
-          </Typography>
-          <Button color="inherit" onClick={() => handleLogOut()}>
-            Log out
-          </Button>
+            <Typography
+              variant="body1"
+              color="inherit"
+              sx={{
+                fontSize: { xs: "0.875rem", sm: "1rem" },
+              }}
+            >
+              Welcome, {user ? user.displayName : "Guest"}
+            </Typography>
+            <Button
+              color="inherit"
+              onClick={handleLogOut}
+              sx={{
+                fontSize: { xs: "0.75rem", sm: "0.875rem" },
+              }}
+            >
+              Log out
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
 
@@ -66,13 +101,22 @@ const Navbar = () => {
             width: drawerWidth,
             boxSizing: "border-box",
             backgroundColor: "#404040",
+            color: "white",
           },
         }}
         open={drawerOpen}
-        variant="persistent"
+        onClose={() => setDrawerOpen(false)}
       >
-        <IconButton onClick={() => setDrawerOpen(false)}>Close</IconButton>
-        <Typography sx={{ padding: 2 }}>Drawer content goes here.</Typography>
+        <Box textAlign={"center"} sx={{ padding: 2 }}>
+          <IconButton
+            onClick={() => setDrawerOpen(false)}
+            sx={{ color: "white" }}
+          >
+            Close
+          </IconButton>
+          <Typography variant="h6" sx={{ marginTop: 2 }}></Typography>
+          <Typography variant="body2" sx={{ marginTop: 1 }}></Typography>
+        </Box>
       </Drawer>
     </>
   );
