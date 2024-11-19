@@ -83,6 +83,11 @@ const Dashboard = () => {
         >
           Your Dashboard
         </Typography>
+        <WorkspaceBanner
+          Title="Recently Viewed"
+          recent={true}
+          workspaceData={workspaces}
+        />
         <WorkspaceBanner Title="Your Workspaces" workspaceData={workspaces} />
       </Box>
     </Box>

@@ -3,6 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { IoTimeOutline } from "react-icons/io5";
 
 interface Props {
+  recent?: boolean;
   Title: string;
   workspaceData?: Array<{
     workspace_id: number;
@@ -12,11 +13,19 @@ interface Props {
   }>;
 }
 
-const WorkspaceBanner = ({ workspaceData, Title }: Props) => {
+const WorkspaceBanner = ({ workspaceData, Title, recent }: Props) => {
   // handle when the workspace tile is pressed
   const handleworkspaceselect = (id: number) => {
     console.log("workspace " + id + " pressed");
   };
+
+  // Filter data to only render recenty viewed workspaces
+  const recentViewDate = new Date();
+  recentViewDate.setMonth(recentViewDate.getMonth() - 2);
+  const filteredWorkspaces = workspaceData?.filter((workspaces) => {
+    const lastUsedDate = new Date(workspaces.last_used_date);
+    return lastUsedDate <= recentViewDate;
+  });
 
   return (
     <Box
@@ -59,34 +68,63 @@ const WorkspaceBanner = ({ workspaceData, Title }: Props) => {
           gap: "1.5rem",
         }}
       >
-        {workspaceData?.map((workspace) => (
-          <Box
-            onClick={() => handleworkspaceselect(workspace.workspace_id)}
-            key={workspace.workspace_id}
-            sx={{
-              padding: 5,
-              border: 2,
-              boxShadow: 3,
-              borderColor: "#E61F63",
-              borderRadius: 1,
-              backgroundColor: "#404040",
-              cursor: "pointer",
-              transition: "transform 0.2s, box-shadow 0.2s",
-              "&:hover": {
-                transform: "scale(1.05)",
-                boxShadow: 6,
-              },
-            }}
-          >
-            <Typography
-              variant="h6"
-              color="white"
-              sx={{ fontSize: { xs: "0.9rem", md: "1rem" } }}
-            >
-              {workspace.name}
-            </Typography>
-          </Box>
-        ))}
+        {!recent
+          ? workspaceData?.map((workspace) => (
+              <Box
+                onClick={() => handleworkspaceselect(workspace.workspace_id)}
+                key={workspace.workspace_id}
+                sx={{
+                  padding: 5,
+                  border: 2,
+                  boxShadow: 3,
+                  borderColor: "#E61F63",
+                  borderRadius: 1,
+                  backgroundColor: "#404040",
+                  cursor: "pointer",
+                  transition: "transform 0.2s, box-shadow 0.2s",
+                  "&:hover": {
+                    transform: "scale(1.05)",
+                    boxShadow: 6,
+                  },
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  color="white"
+                  sx={{ fontSize: { xs: "0.9rem", md: "1rem" } }}
+                >
+                  {workspace.name}
+                </Typography>
+              </Box>
+            ))
+          : filteredWorkspaces?.map((workspace) => (
+              <Box
+                onClick={() => handleworkspaceselect(workspace.workspace_id)}
+                key={workspace.workspace_id}
+                sx={{
+                  padding: 5,
+                  border: 2,
+                  boxShadow: 3,
+                  borderColor: "#E61F63",
+                  borderRadius: 1,
+                  backgroundColor: "#404040",
+                  cursor: "pointer",
+                  transition: "transform 0.2s, box-shadow 0.2s",
+                  "&:hover": {
+                    transform: "scale(1.05)",
+                    boxShadow: 6,
+                  },
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  color="white"
+                  sx={{ fontSize: { xs: "0.9rem", md: "1rem" } }}
+                >
+                  {workspace.name}
+                </Typography>
+              </Box>
+            ))}
       </Box>
     </Box>
   );
