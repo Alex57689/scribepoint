@@ -4,37 +4,42 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import WorkspaceBanner from "../components/workspacebanner/WorkspaceBanner";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import Loading from "../components/loading/Loading";
+import { AppContext } from "../hooks/AppContext";
 
 const Dashboard = () => {
-  const [uid, setUid] = useState<string | null>(null);
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error("UserComponent must be used within an AppContextProvider");
+  }
+  const { userId, setUserId } = context;
   const [workspaces, setWorkspaces] = useState([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Monitor authentication state
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUid(user.uid);
-      } else {
+      if (!user) {
         navigate("/login");
       }
     });
 
-    return () => unsubscribe(); // Cleanup the listener on unmount
+    return () => unsubscribe();
   }, [navigate]);
 
   useEffect(() => {
-    // Fetch workspaces when UID is available
-    if (uid) {
-      getWorkspaces(uid)
+    setLoading(true);
+    if (userId) {
+      getWorkspaces(userId)
         .then((workspaces) => {
           setWorkspaces(workspaces);
+          setLoading(false);
         })
         .catch((error) => console.error("Error fetching workspaces:", error));
     }
-  }, [uid]);
+  }, [userId]);
 
   // Fetch workspaces from the API
   const getWorkspaces = async (uid: string) => {
@@ -72,23 +77,34 @@ const Dashboard = () => {
           boxSizing: "border-box",
         }}
       >
-        <Typography
-          variant="h2"
-          color="primary"
-          sx={{
-            marginTop: 2,
-            fontSize: { xs: "2", md: "3.5rem" },
-            textAlign: "center",
-          }}
-        >
-          Your Dashboard
-        </Typography>
-        <WorkspaceBanner
-          Title="Recently Viewed"
-          recent={true}
-          workspaceData={workspaces}
-        />
-        <WorkspaceBanner Title="Your Workspaces" workspaceData={workspaces} />
+        {loading ? (
+          <>
+            <Loading />
+          </>
+        ) : (
+          <>
+            <Typography
+              variant="h2"
+              color="primary"
+              sx={{
+                marginTop: 2,
+                fontSize: { xs: "2", md: "3.5rem" },
+                textAlign: "center",
+              }}
+            >
+              Your Dashboard
+            </Typography>
+            <WorkspaceBanner
+              Title="Recently Viewed"
+              recent={true}
+              workspaceData={workspaces}
+            />
+            <WorkspaceBanner
+              Title="Your Workspaces"
+              workspaceData={workspaces}
+            />
+          </>
+        )}
       </Box>
     </Box>
   );

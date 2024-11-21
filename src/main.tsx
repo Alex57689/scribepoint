@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App.tsx";
 import { ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
+import { AppContextProvider } from "./hooks/AppContext.tsx";
 
 const theme = createTheme({
   palette: {
@@ -18,7 +19,9 @@ const theme = createTheme({
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider theme={theme}>
     <StrictMode>
-      <App />
+      <AppContextProvider>
+        <App />
+      </AppContextProvider>
     </StrictMode>
   </ThemeProvider>
 );

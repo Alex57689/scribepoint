@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { IoTimeOutline } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa6";
+import Loading from "../loading/Loading";
 
 interface Props {
   recent?: boolean;
@@ -68,63 +70,96 @@ const WorkspaceBanner = ({ workspaceData, Title, recent }: Props) => {
           gap: "1.5rem",
         }}
       >
-        {!recent
-          ? workspaceData?.map((workspace) => (
-              <Box
-                onClick={() => handleworkspaceselect(workspace.workspace_id)}
-                key={workspace.workspace_id}
-                sx={{
-                  padding: 5,
-                  border: 2,
-                  boxShadow: 3,
-                  borderColor: "#E61F63",
-                  borderRadius: 1,
-                  backgroundColor: "#404040",
-                  cursor: "pointer",
-                  transition: "transform 0.2s, box-shadow 0.2s",
-                  "&:hover": {
-                    transform: "scale(1.05)",
-                    boxShadow: 6,
-                  },
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  color="white"
-                  sx={{ fontSize: { xs: "0.9rem", md: "1rem" } }}
-                >
-                  {workspace.name}
-                </Typography>
-              </Box>
-            ))
-          : filteredWorkspaces?.map((workspace) => (
-              <Box
-                onClick={() => handleworkspaceselect(workspace.workspace_id)}
-                key={workspace.workspace_id}
-                sx={{
-                  padding: 5,
-                  border: 2,
-                  boxShadow: 3,
-                  borderColor: "#E61F63",
-                  borderRadius: 1,
-                  backgroundColor: "#404040",
-                  cursor: "pointer",
-                  transition: "transform 0.2s, box-shadow 0.2s",
-                  "&:hover": {
-                    transform: "scale(1.05)",
-                    boxShadow: 6,
-                  },
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  color="white"
-                  sx={{ fontSize: { xs: "0.9rem", md: "1rem" } }}
-                >
-                  {workspace.name}
-                </Typography>
-              </Box>
-            ))}
+        {workspaceData?.length === 0 ? (
+          <Box
+            sx={{
+              padding: 5,
+              border: 2,
+              boxShadow: 3,
+              borderColor: "#E61F63",
+              borderRadius: 1,
+              backgroundColor: "#404040",
+              cursor: "pointer",
+              transition: "transform 0.2s, box-shadow 0.2s",
+              "&:hover": {
+                transform: "scale(1.05)",
+                boxShadow: 6,
+              },
+            }}
+          >
+            <Typography
+              variant="h6"
+              color="white"
+              sx={{ fontSize: { xs: "0.9rem", md: "1rem" } }}
+            >
+              Create New Workspace <FaPlus />
+            </Typography>
+          </Box>
+        ) : (
+          <>
+            {!recent
+              ? workspaceData?.map((workspace) => (
+                  <Box
+                    onClick={() =>
+                      handleworkspaceselect(workspace.workspace_id)
+                    }
+                    key={workspace.workspace_id}
+                    sx={{
+                      padding: 5,
+                      border: 2,
+                      boxShadow: 3,
+                      borderColor: "#E61F63",
+                      borderRadius: 1,
+                      backgroundColor: "#404040",
+                      cursor: "pointer",
+                      transition: "transform 0.2s, box-shadow 0.2s",
+                      "&:hover": {
+                        transform: "scale(1.05)",
+                        boxShadow: 6,
+                      },
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      color="white"
+                      sx={{ fontSize: { xs: "0.9rem", md: "1rem" } }}
+                    >
+                      {workspace.name}
+                    </Typography>
+                  </Box>
+                ))
+              : filteredWorkspaces?.map((workspace) => (
+                  <Box
+                    onClick={() =>
+                      handleworkspaceselect(workspace.workspace_id)
+                    }
+                    key={workspace.workspace_id}
+                    sx={{
+                      padding: 5,
+                      border: 2,
+                      boxShadow: 3,
+                      borderColor: "#E61F63",
+                      borderRadius: 1,
+                      backgroundColor: "#404040",
+                      cursor: "pointer",
+                      transition: "transform 0.2s, box-shadow 0.2s",
+                      "&:hover": {
+                        transform: "scale(1.05)",
+                        boxShadow: 6,
+                      },
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      color="white"
+                      sx={{ fontSize: { xs: "0.9rem", md: "1rem" } }}
+                    >
+                      {workspace.name}
+                    </Typography>
+                  </Box>
+                ))}
+          </>
+        )}
       </Box>
     </Box>
   );

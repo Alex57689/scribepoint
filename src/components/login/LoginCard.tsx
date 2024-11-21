@@ -1,5 +1,5 @@
 import { Typography, Box, Container, TextField, Button } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import { auth } from "../../firebase/firebaseConfig";
 import {
@@ -8,11 +8,17 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../hooks/AppContext";
 
 interface Props {
   click: any;
 }
 const LoginCard = ({ click }: Props) => {
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error("UserComponent must be used within an AppContextProvider");
+  }
+  const { setUserId } = context;
   const [email, setEmail] = useState<string>("");
   const [fname, setFname] = useState<string>("");
   const [lname, setLname] = useState<string>("");
@@ -60,6 +66,7 @@ const LoginCard = ({ click }: Props) => {
     try {
       const userCredential = signInWithEmailAndPassword(auth, email, password);
       const user = (await userCredential).user;
+      setUserId(user.uid);
       navigate("/dashboard");
     } catch (error: any) {
       const errorCode = error.code;

@@ -25,9 +25,7 @@ const Board = () => {
       >
         <Navbar />
         <Box>
-          <Box marginLeft={3} marginRight={3}>
-            <TileGrid />
-          </Box>
+          <Box marginLeft={3} marginRight={3}></Box>
         </Box>
       </Box>
     </>
