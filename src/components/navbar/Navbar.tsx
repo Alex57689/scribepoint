@@ -13,7 +13,12 @@ import { auth } from "../../firebase/firebaseConfig";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-const Navbar = () => {
+interface Props {
+  currentBoard?: number | null;
+  boardData?: Array<{ board_id: number; title: string }>;
+  setSelectedBoard: React.Dispatch<React.SetStateAction<number>>;
+}
+const Navbar = ({ boardData, currentBoard, setSelectedBoard }: Props) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const drawerWidth = 240;
   const user = auth.currentUser;
@@ -116,6 +121,28 @@ const Navbar = () => {
           </IconButton>
           <Typography variant="h6" sx={{ marginTop: 2 }}></Typography>
           <Typography variant="body2" sx={{ marginTop: 1 }}></Typography>
+        </Box>
+        <Box textAlign={"center"}>
+          {boardData && boardData.length > 0
+            ? boardData.map((board) =>
+                currentBoard === board.board_id ? (
+                  <Button variant="contained" key={board.board_id} fullWidth>
+                    {board.title}
+                  </Button>
+                ) : (
+                  <Button
+                    key={board.board_id}
+                    fullWidth
+                    onClick={() => {
+                      setSelectedBoard(board.board_id);
+                      setDrawerOpen(false);
+                    }}
+                  >
+                    {board.title}
+                  </Button>
+                )
+              )
+            : null}
         </Box>
       </Drawer>
     </>

@@ -1,8 +1,7 @@
-import React, { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { IoTimeOutline } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
-import Loading from "../loading/Loading";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   recent?: boolean;
@@ -16,9 +15,12 @@ interface Props {
 }
 
 const WorkspaceBanner = ({ workspaceData, Title, recent }: Props) => {
+  const navigate = useNavigate();
+
   // handle when the workspace tile is pressed
   const handleworkspaceselect = (id: number) => {
     console.log("workspace " + id + " pressed");
+    navigate("/board", { state: { workspaceId: id } });
   };
 
   // Filter data to only render recenty viewed workspaces

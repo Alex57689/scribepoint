@@ -6,22 +6,11 @@ import {
   Modal,
   TextField,
 } from "@mui/material";
-import "./jobtile.css";
+import "./Card.css";
 import { MoreVert } from "@mui/icons-material";
 import SubjectIcon from "@mui/icons-material/Subject";
 import AddIcon from "@mui/icons-material/Add";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { useState } from "react";
-import { styled } from "@mui/system";
-interface Task {
-  id: number;
-  title: string;
-  description: string;
-  createdby: string;
-  date: string;
-  activity: Activity[];
-}
 
 interface Activity {
   id: number;
@@ -30,31 +19,46 @@ interface Activity {
   event: string;
 }
 
-interface CardProp {
-  id: number;
-  cardTitle: string;
-  cardDate: string;
-  tasks: Task[];
+type Card = {
+  card_id: number;
+  board_id: number;
+  title: string;
+  description: string;
+  position: number;
+  created_at: Date;
+  due_date: Date;
+  assigned_to: Array<string>;
+  tasks: Array<Task>;
+};
+
+type Task = {
+  task_id: number;
+  card_id: number;
+  title: string;
+  completed: boolean;
+  position: number;
+  created_at: Date;
+};
+
+interface Props {
+  cardData: Card;
 }
 
-interface Card {
-  card: CardProp;
-}
-
-const JobTile = ({ card }: Card) => {
-  const [open, setOpen] = useState(false);
+const JobTile = ({ cardData }: Props) => {
+  const [taskDetailOpen, setTaskDetailOpen] = useState(false);
   const [createCardOpen, setCreateCardOpen] = useState(false);
   const [taskId, setTaskId] = useState<number | null>(null);
 
   const handleEditCardClick = (id: number) => {
-    setOpen(true);
+    setTaskDetailOpen(true);
     setTaskId(id);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const taskDetailHandleClose = () => {
+    setTaskDetailOpen(false);
     setTaskId(null);
   };
+
   const handleCreateCardClose = () => {
     setCreateCardOpen(false);
   };
@@ -63,52 +67,29 @@ const JobTile = ({ card }: Card) => {
     setCreateCardOpen(true);
   };
 
-  // styled componenets
-
-  const CommentBox = styled(TextField)({
-    "& .MuiOutlinedInput-root": {
-      borderRadius: "20px",
-      backgroundColor: "#ffffff",
-      padding: "0",
-      "& fieldset": {
-        borderColor: "#ced4da",
-      },
-      "&:hover fieldset": {
-        borderColor: "#b0b3b8",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#b0b3b8",
-      },
-    },
-    "& .MuiInputBase-input": {
-      padding: "10px 15px",
-    },
-  });
-
-  // Find the task to display in the modal
-  const selectedTask = card.tasks.find((task) => task.id === taskId);
+  const selectedTask = cardData.tasks.find((task) => task.task_id === taskId);
 
   return (
-    <div className="tile-container" key={card.id}>
+    <div className="tile-container" key={cardData.card_id}>
       <div className="tile-title">
-        <Typography fontWeight={700}>{card.cardTitle}</Typography>
+        <Typography fontWeight={700}>{cardData.title}</Typography>
         <IconButton>
           <MoreVert />
         </IconButton>
       </div>
 
-      {card.tasks.map((task) => (
+      {cardData.tasks.map((task) => (
         <div
-          onClick={() => handleEditCardClick(task.id)} // Use arrow function to pass the reference
-          key={task.id}
+          onClick={() => handleEditCardClick(task.task_id)}
+          key={task.task_id}
           className="tile-item"
         >
           <Typography fontSize={14} fontWeight={400}>
             {task.title}
           </Typography>
 
-          {task.description.length > 1 ? (
-            <Tooltip title="This task has a description." arrow>
+          {task.title.length > 0 ? (
+            <Tooltip title="This task has details." arrow>
               <SubjectIcon fontSize="small" className="tile-item-descicon" />
             </Tooltip>
           ) : null}
@@ -122,7 +103,7 @@ const JobTile = ({ card }: Card) => {
       </div>
 
       {/* Modal for viewing task */}
-      <Modal
+      {/*<Modal
         open={open}
         onClose={handleClose} // Correctly handle modal close
         aria-labelledby="modal-modal-title"
@@ -218,17 +199,33 @@ const JobTile = ({ card }: Card) => {
           ) : null}
         </div>
       </Modal>
-
+*/}
       {/* Modal for creating task */}
       <Modal
         open={createCardOpen}
-        onClose={handleCreateCardClose} // Correctly handle modal close
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        onClose={handleCreateCardClose}
+        aria-labelledby="create-task-modal-title"
+        aria-describedby="create-task-modal-description"
       >
         <div className="cardmodal">
-          {" "}
-          this is some dummy info to see if this works
+          <Typography id="create-task-modal-title" variant="h6">
+            Add a New Task
+          </Typography>
+          <TextField
+            label="Task Title"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Description"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+          />
+          <Button variant="contained" color="primary">
+            Create Task
+          </Button>
         </div>
       </Modal>
     </div>
