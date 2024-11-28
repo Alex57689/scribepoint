@@ -86,7 +86,7 @@ const Board = () => {
             </>
           ) : (
             <>
-              <Box marginLeft={3} marginRight={3}>
+              <Box>
                 <BoardGrid selectedBoard={selectedBoard} />
               </Box>
             </>

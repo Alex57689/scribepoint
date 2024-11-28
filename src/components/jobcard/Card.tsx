@@ -5,19 +5,16 @@ import {
   Tooltip,
   Modal,
   TextField,
+  styled,
 } from "@mui/material";
 import "./Card.css";
 import { MoreVert } from "@mui/icons-material";
 import SubjectIcon from "@mui/icons-material/Subject";
 import AddIcon from "@mui/icons-material/Add";
-import { useState } from "react";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-interface Activity {
-  id: number;
-  createdBy: string;
-  date: string;
-  event: string;
-}
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import { useState } from "react";
 
 type Card = {
   card_id: number;
@@ -32,19 +29,21 @@ type Card = {
 };
 
 type Task = {
+  activity?: string[];
   task_id: number;
   card_id: number;
   title: string;
   completed: boolean;
   position: number;
   created_at: Date;
+  task_description: string;
 };
 
 interface Props {
   cardData: Card;
 }
 
-const JobTile = ({ cardData }: Props) => {
+const CardTile = ({ cardData }: Props) => {
   const [taskDetailOpen, setTaskDetailOpen] = useState(false);
   const [createCardOpen, setCreateCardOpen] = useState(false);
   const [taskId, setTaskId] = useState<number | null>(null);
@@ -66,6 +65,26 @@ const JobTile = ({ cardData }: Props) => {
   const handleCreateCardClick = () => {
     setCreateCardOpen(true);
   };
+
+  const CommentBox = styled(TextField)({
+    "& .MuiOutlinedInput-root": {
+      borderRadius: "20px",
+      backgroundColor: "#ffffff",
+      padding: "0",
+      "& fieldset": {
+        borderColor: "#ced4da",
+      },
+      "&:hover fieldset": {
+        borderColor: "#b0b3b8",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#b0b3b8",
+      },
+    },
+    "& .MuiInputBase-input": {
+      padding: "10px 15px",
+    },
+  });
 
   const selectedTask = cardData.tasks.find((task) => task.task_id === taskId);
 
@@ -90,7 +109,11 @@ const JobTile = ({ cardData }: Props) => {
 
           {task.title.length > 0 ? (
             <Tooltip title="This task has details." arrow>
-              <SubjectIcon fontSize="small" className="tile-item-descicon" />
+              {task.task_description ? (
+                <SubjectIcon fontSize="small" className="tile-item-descicon" />
+              ) : (
+                <></>
+              )}
             </Tooltip>
           ) : null}
         </div>
@@ -103,9 +126,9 @@ const JobTile = ({ cardData }: Props) => {
       </div>
 
       {/* Modal for viewing task */}
-      {/*<Modal
-        open={open}
-        onClose={handleClose} // Correctly handle modal close
+      <Modal
+        open={taskDetailOpen}
+        onClose={taskDetailHandleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -119,7 +142,7 @@ const JobTile = ({ cardData }: Props) => {
                   {selectedTask.title}
                 </Typography>
                 <Typography fontSize={".8rem"}>
-                  in list <strong>{card.cardTitle}</strong>
+                  in list <strong>{cardData.title}</strong>
                 </Typography>
               </div>
               <SubjectIcon sx={{}} fontSize="medium" />
@@ -131,7 +154,7 @@ const JobTile = ({ cardData }: Props) => {
                   </Button>
                 </div>
                 <div className="editcarddesc">
-                  <Typography>{selectedTask.description}</Typography>
+                  <Typography>{selectedTask.task_description}</Typography>
                 </div>
               </div>
               <FormatListBulletedIcon
@@ -166,17 +189,18 @@ const JobTile = ({ cardData }: Props) => {
               <div className="editcardgridactivity">
                 <div style={{ marginLeft: "0.5rem" }}>
                   <Typography fontSize={".9rem"}>
-                    <strong>{selectedTask.createdby}</strong> added this card in
-                    {card.cardTitle}
+                    <strong>{"selectedTask.createdby"}</strong> added this card
+                    in
+                    {cardData.title}
                   </Typography>
                   <Typography fontSize={"0.8rem"}>
-                    {selectedTask.date}
+                    {new Date(selectedTask.created_at).toLocaleDateString()}
                   </Typography>
                 </div>
               </div>
 
-              {selectedTask &&
-                selectedTask.activity.map((activity) => (
+              {/*selectedTask &&
+                selectedTask.activity.map((activity: any) => (
                   <>
                     <AccountCircleIcon
                       color="primary"
@@ -194,12 +218,12 @@ const JobTile = ({ cardData }: Props) => {
                       </div>
                     </div>
                   </>
-                ))}
+                ))*/}
             </div>
           ) : null}
         </div>
       </Modal>
-*/}
+
       {/* Modal for creating task */}
       <Modal
         open={createCardOpen}
@@ -232,4 +256,4 @@ const JobTile = ({ cardData }: Props) => {
   );
 };
 
-export default JobTile;
+export default CardTile;

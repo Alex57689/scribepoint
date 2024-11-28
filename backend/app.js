@@ -75,7 +75,9 @@ app.get('/api/cards/:id', async (req, res) => {
                 t.title AS task_title,
                 t.completed AS task_completed,
                 t.position AS task_position,
-                t.created_at AS task_created_at
+                t.created_at AS task_created_at,
+                t.description AS task_description,
+                t.activity as task_activity
             FROM 
                 cards c
             LEFT JOIN 
@@ -97,7 +99,7 @@ app.get('/api/cards/:id', async (req, res) => {
 
         const cards = rows.reduce((acc, row) => {
             let card = acc.find(c => c.card_id === row.card_id);
-
+        
             if (!card) {
                 let assignedTo;
                 try {
@@ -105,7 +107,7 @@ app.get('/api/cards/:id', async (req, res) => {
                 } catch {
                     assignedTo = row.card_assigned_to ? [row.card_assigned_to] : [];
                 }
-
+        
                 card = {
                     card_id: row.card_id,
                     board_id: row.board_id,
@@ -119,8 +121,15 @@ app.get('/api/cards/:id', async (req, res) => {
                 };
                 acc.push(card);
             }
-
+        
             if (row.task_id) {
+                let activity; // Move activity definition here, where it is needed
+                try {
+                    activity = JSON.parse(row.task_activity || '[]');
+                } catch {
+                    activity = row.task_activity ? [row.task_activity] : [];
+                }
+        
                 card.tasks.push({
                     task_id: row.task_id,
                     card_id: row.card_id,
@@ -128,11 +137,14 @@ app.get('/api/cards/:id', async (req, res) => {
                     completed: !!row.task_completed,
                     position: row.task_position,
                     created_at: row.task_created_at,
+                    task_description: row.task_description,
+                    task_activity: activity
                 });
             }
-
+        
             return acc;
         }, []);
+        
 
 
         return res.json(cards);

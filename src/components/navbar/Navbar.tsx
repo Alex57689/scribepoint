@@ -107,6 +107,7 @@ const Navbar = ({ boardData, currentBoard, setSelectedBoard }: Props) => {
             boxSizing: "border-box",
             backgroundColor: "#404040",
             color: "white",
+            position: "relative",
           },
         }}
         open={drawerOpen}
@@ -119,8 +120,6 @@ const Navbar = ({ boardData, currentBoard, setSelectedBoard }: Props) => {
           >
             Close
           </IconButton>
-          <Typography variant="h6" sx={{ marginTop: 2 }}></Typography>
-          <Typography variant="body2" sx={{ marginTop: 1 }}></Typography>
         </Box>
         <Box textAlign={"center"}>
           {boardData && boardData.length > 0
@@ -143,6 +142,20 @@ const Navbar = ({ boardData, currentBoard, setSelectedBoard }: Props) => {
                 )
               )
             : null}
+        </Box>
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: 0,
+            padding: 2,
+          }}
+        >
+          <IconButton
+            onClick={() => navigate("/dashboard")}
+            sx={{ color: "white" }}
+          >
+            Return to Dashboard
+          </IconButton>
         </Box>
       </Drawer>
     </>

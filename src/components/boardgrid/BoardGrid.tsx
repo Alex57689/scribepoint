@@ -13,17 +13,19 @@ type Card = {
   position: number;
   created_at: Date;
   due_date: Date;
-  assigned_to: Array<[]>;
-  tasks: Array<[Task]>;
+  assigned_to: Array<string>;
+  tasks: Array<Task>;
 };
 
 type Task = {
+  activity?: string[];
   task_id: number;
   card_id: number;
   title: string;
   completed: boolean;
   position: number;
   created_at: Date;
+  task_description: string;
 };
 
 interface Props {
