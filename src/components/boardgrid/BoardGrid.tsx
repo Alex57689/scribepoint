@@ -73,7 +73,7 @@ const BoardGrid = ({ selectedBoard }: Props) => {
       ) : (
         <div className="grid">
           {cards.map((card) => (
-            <Card cardData={card} />
+            <Card key={card.card_id} cardData={card} />
           ))}
         </div>
       )}

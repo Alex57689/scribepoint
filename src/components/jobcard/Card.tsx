@@ -15,6 +15,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { useState } from "react";
+import axios from "axios";
 
 type Card = {
   card_id: number;
@@ -45,8 +46,12 @@ interface Props {
 
 const CardTile = ({ cardData }: Props) => {
   const [taskDetailOpen, setTaskDetailOpen] = useState(false);
-  const [createCardOpen, setCreateCardOpen] = useState(false);
+  const [createTaskOpen, setCreateTaskOpen] = useState(false);
   const [taskId, setTaskId] = useState<number | null>(null);
+  const [newTask, setNewTask] = useState({
+    title: "",
+    desc: "",
+  });
 
   const handleEditCardClick = (id: number) => {
     setTaskDetailOpen(true);
@@ -58,12 +63,48 @@ const CardTile = ({ cardData }: Props) => {
     setTaskId(null);
   };
 
-  const handleCreateCardClose = () => {
-    setCreateCardOpen(false);
+  const handleCreateTaskClose = () => {
+    setCreateTaskOpen(false);
   };
 
   const handleCreateCardClick = () => {
-    setCreateCardOpen(true);
+    setCreateTaskOpen(true);
+  };
+
+  const handleNewTaskChange = (e: any) => {
+    const { name, value } = e.target;
+
+    setNewTask((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleNewTaskClick = () => {
+    if (!newTask.title.trim()) {
+      alert("Title and description are required.");
+      return;
+    }
+    addNewTask();
+    setNewTask({ title: "", desc: "" });
+    setCreateTaskOpen(false);
+  };
+
+  const handleDeleteTaskClick = () => {
+    deleteTask();
+    taskDetailHandleClose();
+  };
+
+  const addNewTask = async () => {
+    const data = {
+      card_id: cardData.card_id,
+      title: newTask.title,
+      desc: newTask.desc,
+    };
+    await axios.post(`${import.meta.env.VITE_APP_API_ADDRESS}/task/`, data);
+  };
+
+  const deleteTask = async () => {
+    const id = selectedTask?.task_id;
+    console.log(id);
+    axios.delete(`${import.meta.env.VITE_APP_API_ADDRESS}/task/${id}`);
   };
 
   const CommentBox = styled(TextField)({
@@ -219,6 +260,11 @@ const CardTile = ({ cardData }: Props) => {
                     </div>
                   </>
                 ))*/}
+              <div className="buttonctn">
+                <Button variant="outlined" onClick={handleDeleteTaskClick}>
+                  Delete
+                </Button>
+              </div>
             </div>
           ) : null}
         </div>
@@ -226,8 +272,8 @@ const CardTile = ({ cardData }: Props) => {
 
       {/* Modal for creating task */}
       <Modal
-        open={createCardOpen}
-        onClose={handleCreateCardClose}
+        open={createTaskOpen}
+        onClose={handleCreateTaskClose}
         aria-labelledby="create-task-modal-title"
         aria-describedby="create-task-modal-description"
       >
@@ -240,14 +286,24 @@ const CardTile = ({ cardData }: Props) => {
             variant="outlined"
             fullWidth
             margin="normal"
+            name="title"
+            value={newTask.title}
+            onChange={handleNewTaskChange}
           />
           <TextField
             label="Description"
             variant="outlined"
+            name="desc"
             fullWidth
             margin="normal"
+            value={newTask.desc}
+            onChange={handleNewTaskChange}
           />
-          <Button variant="contained" color="primary">
+          <Button
+            onClick={handleNewTaskClick}
+            variant="contained"
+            color="primary"
+          >
             Create Task
           </Button>
         </div>

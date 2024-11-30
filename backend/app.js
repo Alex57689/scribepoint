@@ -155,8 +155,34 @@ app.get('/api/cards/:id', async (req, res) => {
 });
 
 
+// Creates new task 
+app.post('/api/task', async (req, res) => {
+    const { card_id, title, desc } = req.body;
+    try {
+        const query = 'INSERT INTO TASKS (card_id, title, description) VALUES (?, ?, ?);';
+        const [result] = await pool.query(query, [card_id, title, desc]);
+        res.status(201).json({ message: 'Task successfully added', task_id: result.insertId });
+    } catch (err) {
+        console.error('Error creating task', err);
+        res.status(500).send('Failed to create task');
+    }
+});
 
+// Delete new task
+app.delete('/api/task/:id', async (req, res) => {
+    const { id } = req.params;
 
+    try {
+        // Await the result of the query
+        const [results] = await pool.query('DELETE FROM tasks WHERE task_id = ?', [id]);
+
+        // Respond with success
+        res.status(200).send('Task deleted successfully');
+    } catch (err) {
+        console.error('Error deleting task', err);
+        res.status(500).send('Failed to delete task');
+    }
+});
 
 
 // Creates users once UID has been created by firebase
@@ -166,7 +192,6 @@ app.post('/api/users', async (req, res) => {
         const query = 'INSERT INTO users (user_id, name, email) VALUES (?, ?, ?)';
         const result = await pool.query(query, [user_id, name, email]);
         res.status(201).json({ message: 'User added successfully', id: result[0].insertId });
-        console.log('User added sucessfully')
     } catch (err) {
         console.error('Error adding user:', err);
         res.status(500).send('Failed to add user');
