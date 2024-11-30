@@ -7,11 +7,14 @@ import Board from "./pages/Board";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import ProtectedRoute from "./hooks/ProtectedRoute";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
     <BrowserRouter>
       <main>
+        <ToastContainer />
+
         <Routes>
           <Route index element={<Home />}></Route>
           <Route

@@ -12,7 +12,8 @@ import { MoreVert } from "@mui/icons-material";
 import SubjectIcon from "@mui/icons-material/Subject";
 import AddIcon from "@mui/icons-material/Add";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { useState } from "react";
 import axios from "axios";
@@ -47,6 +48,8 @@ interface Props {
 const CardTile = ({ cardData }: Props) => {
   const [taskDetailOpen, setTaskDetailOpen] = useState(false);
   const [createTaskOpen, setCreateTaskOpen] = useState(false);
+  const [editDesc, setEditDesc] = useState(false);
+  const [newTaskDesc, setNewTaskDesc] = useState<string | null>("");
   const [taskId, setTaskId] = useState<number | null>(null);
   const [newTask, setNewTask] = useState({
     title: "",
@@ -61,6 +64,7 @@ const CardTile = ({ cardData }: Props) => {
   const taskDetailHandleClose = () => {
     setTaskDetailOpen(false);
     setTaskId(null);
+    setEditDesc(false);
   };
 
   const handleCreateTaskClose = () => {
@@ -69,6 +73,28 @@ const CardTile = ({ cardData }: Props) => {
 
   const handleCreateCardClick = () => {
     setCreateTaskOpen(true);
+  };
+  const handleEditTaskDesc = () => {
+    setNewTaskDesc(selectedTask?.task_description || null);
+    setEditDesc(!editDesc);
+  };
+
+  const handleUpdateTaskDesc = async () => {
+    if (!selectedTask?.task_id || !newTaskDesc) {
+      alert("Please select a task and enter a new description first.");
+      return;
+    }
+    try {
+      await updateTaskDesc(selectedTask.task_id, newTaskDesc);
+      taskDetailHandleClose();
+    } catch (error) {
+      alert("Failed to update task description. Please try again.");
+      console.error("Error updating task description:", error);
+    }
+  };
+
+  const handleTaskDescChange = (e: any) => {
+    setNewTaskDesc(e.target.value);
   };
 
   const handleNewTaskChange = (e: any) => {
@@ -98,13 +124,55 @@ const CardTile = ({ cardData }: Props) => {
       title: newTask.title,
       desc: newTask.desc,
     };
-    await axios.post(`${import.meta.env.VITE_APP_API_ADDRESS}/task/`, data);
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_APP_API_ADDRESS}/task/`,
+        data
+      );
+      toast.success("Task added successfully!", {
+        autoClose: 1500, // Time in ms
+        pauseOnHover: true,
+        draggable: true,
+      });
+      console.log("New Task Added:", response.data);
+    } catch (error) {
+      console.error("Error adding new task:", error);
+      toast.error("Failed to add task. Please try again.");
+    }
   };
 
   const deleteTask = async () => {
     const id = selectedTask?.task_id;
-    console.log(id);
-    axios.delete(`${import.meta.env.VITE_APP_API_ADDRESS}/task/${id}`);
+    if (!id) {
+      toast.error("No task selected for deletion.");
+      return;
+    }
+    try {
+      await axios.delete(`${import.meta.env.VITE_APP_API_ADDRESS}/task/${id}`);
+      toast.success("Task deleted successfully!");
+      console.log("Deleted Task ID:", id);
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      toast.error("Failed to delete task. Please try again.");
+    }
+  };
+
+  const updateTaskDesc = async (taskId: number, desc: string) => {
+    if (!taskId || !desc) {
+      toast.error("Task ID or description is missing.");
+      return;
+    }
+    try {
+      const response = await axios.patch(
+        `${import.meta.env.VITE_APP_API_ADDRESS}/task/${taskId}`,
+        { desc }
+      );
+      toast.success("Task description updated successfully!");
+      console.log("Updated Task:", response.data);
+    } catch (error) {
+      console.error("Error updating task description:", error);
+      toast.error("Failed to update task description. Please try again.");
+    }
   };
 
   const CommentBox = styled(TextField)({
@@ -190,12 +258,64 @@ const CardTile = ({ cardData }: Props) => {
               <div className="editcardgridrow">
                 <div className="content">
                   <Typography variant="h6">Description</Typography>
-                  <Button variant="contained" size="small">
-                    Edit
-                  </Button>
+                  <div>
+                    {editDesc ? (
+                      <>
+                        <Button
+                          variant="contained"
+                          sx={{ marginRight: "1rem" }}
+                          size="small"
+                          onClick={handleUpdateTaskDesc}
+                        >
+                          Save
+                        </Button>
+                        <Button
+                          variant="contained"
+                          size="small"
+                          onClick={handleEditTaskDesc}
+                        >
+                          Close
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        {" "}
+                        <Button
+                          variant="contained"
+                          size="small"
+                          onClick={handleEditTaskDesc}
+                        >
+                          Edit
+                        </Button>
+                      </>
+                    )}
+                  </div>
                 </div>
                 <div className="editcarddesc">
-                  <Typography>{selectedTask.task_description}</Typography>
+                  {editDesc ? (
+                    <>
+                      <TextField
+                        value={newTaskDesc}
+                        onChange={handleTaskDescChange}
+                        label="Description"
+                        multiline
+                        rows={6}
+                        variant="standard"
+                        fullWidth
+                        sx={{
+                          "& .MuiInput-root": {
+                            backgroundColor: "#ffffff", // Set the background to white
+                            borderRadius: "8px", // Add border radius
+                            padding: "0.5rem", // Optional: Add padding for better spacing
+                          },
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Typography>{selectedTask.task_description}</Typography>
+                    </>
+                  )}
                 </div>
               </div>
               <FormatListBulletedIcon

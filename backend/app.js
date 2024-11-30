@@ -184,6 +184,27 @@ app.delete('/api/task/:id', async (req, res) => {
     }
 });
 
+// Updates Task Description
+app.patch('/api/task/:id', async (req, res) => {
+    const { id } = req.params; 
+    const { desc } = req.body; 
+
+    try {
+        const [result] = await pool.query(
+            'UPDATE tasks SET description = ? WHERE task_id = ?',
+            [desc, id] 
+        );
+
+        if (result.affectedRows > 0) {
+            res.status(200).send('Task description updated');
+        } else {
+            res.status(404).send('Task not found'); 
+        }
+    } catch (err) {
+        console.error('Error updating task description', err);
+        res.status(500).send('Failed to update task');
+    }
+});
 
 // Creates users once UID has been created by firebase
 app.post('/api/users', async (req, res) => {
