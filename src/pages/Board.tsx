@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 import Navbar from "../components/navbar/Navbar";
-import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../hooks/AppContext";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
@@ -20,10 +19,7 @@ type Board = {
 const Board = () => {
   const location = useLocation();
   const workspaceId = location.state ? location.state?.workspaceId : null;
-  const context = useContext(AppContext);
-  if (!context) {
-    throw new Error("UserComponent must be used within an AppContextProvider");
-  }
+
   const [loading, setLoading] = useState<boolean>(false);
   const [boards, setBoards] = useState<Board[]>([]);
   const [selectedBoard, setSelectedBoard] = useState<number>(0);

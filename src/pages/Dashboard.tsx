@@ -4,17 +4,13 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import WorkspaceBanner from "../components/workspacebanner/WorkspaceBanner";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Loading from "../components/loading/Loading";
-import { AppContext } from "../hooks/AppContext";
+import useAppState from "../hooks/AppContext";
 
 const Dashboard = () => {
-  const context = useContext(AppContext);
-  if (!context) {
-    throw new Error("UserComponent must be used within an AppContextProvider");
-  }
-  const { userId, setUserId } = context;
+  const { userId, setUserId } = useAppState();
   const [workspaces, setWorkspaces] = useState([]);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();

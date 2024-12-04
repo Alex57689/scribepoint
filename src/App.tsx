@@ -18,7 +18,7 @@ function App() {
         <Routes>
           <Route index element={<Home />}></Route>
           <Route
-            path="/Board"
+            path="/board"
             element={
               <ProtectedRoute>
                 <Board />
@@ -26,7 +26,7 @@ function App() {
             }
           ></Route>
           <Route
-            path="/Dashboard"
+            path="/dashboard"
             element={
               <ProtectedRoute>
                 <Dashboard />

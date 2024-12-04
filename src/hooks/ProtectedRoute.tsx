@@ -1,5 +1,5 @@
-import { ReactNode, useContext, useEffect } from "react";
-import { AppContext } from "./AppContext";
+import { ReactNode, useEffect } from "react";
+import useAppState from "./AppContext";
 import { useNavigate } from "react-router-dom";
 
 interface ProtectedRouteProps {
@@ -8,13 +8,7 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const navigate = useNavigate();
-  const context = useContext(AppContext);
-
-  if (!context) {
-    throw new Error("ProtectedRoute must be used within an AppContextProvider");
-  }
-
-  const { userId } = context;
+  const { userId } = useAppState();
 
   useEffect(() => {
     if (!userId) {

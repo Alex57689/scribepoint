@@ -1,9 +1,12 @@
-import React, { useState, createContext, ReactNode } from "react";
+import React, { useState, createContext, ReactNode, useContext } from "react";
 
 const AppContext = createContext<{
   userId: string | null;
   setUserId: React.Dispatch<React.SetStateAction<string | null>>;
-} | null>(null);
+}>({
+  userId: null,
+  setUserId: () => {},
+});
 
 interface AppContextProviderProps {
   children: ReactNode;
@@ -21,4 +24,8 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({
   );
 };
 
-export { AppContext, AppContextProvider };
+export { AppContextProvider };
+
+export default function useAppState() {
+  return useContext(AppContext);
+}

@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./BoardGrid.css";
-import { AppContext } from "../../hooks/AppContext";
 import axios from "axios";
 import Card from "../jobcard/Card";
 import Loading from "../loading/Loading";
@@ -32,10 +31,6 @@ interface Props {
   selectedBoard: number;
 }
 const BoardGrid = ({ selectedBoard }: Props) => {
-  const context = useContext(AppContext);
-  if (!context) {
-    throw new Error("userComponent muse be used within AppContextProvider");
-  }
   const [loading, setLoading] = useState<boolean>(false);
   const [cards, setCards] = useState<Card[]>([]);
 
